@@ -1,31 +1,42 @@
 const express = require("express");
+const connectDB= require("./config/database.js");
+const User= require("./models/user.js");
 const app = express();
 
-//order matter alot
-//app.use("/user", rH1, rH2, [rH3, rH4], rH5)
-const {adminAuth, userAuth} = require("./middlewares/auth.js");
 
-app.use("/admin", adminAuth);   //this is a middleware
+app.post("/signup",async(req, res)=>{
+  const obj ={
+    firstName:"virat",
+    lastName:"Chaudhary",
+    email:"pravesh@example.com",
+    password:"password123",
+    age:25,
+    gender:"Male"
+  }
+  const user = new User(obj);
 
-app.get("/admin/getAllData", (req, res) =>{
-    res.send("All Data send")
-})
-
-// ish trha call kre middleware ko agr 1 he request handle ho.
-app.get("/user",userAuth, (req, res) =>{
-    res.send("Hello I am user")
-})
-
-
-app.use("/", (err, req, res, next)=>{
-    if(err){
-        res.status(500).send("Something went wrong")
-    }
-})
-
-
+   
+  try{
+  await user.save()
+  res.send("User signed up successfully");
+  }catch(err){
+    res.status(500).send("Error signing up user");
+}
+  
+});
 
 
-app.listen(3001, ()=>{
-    console.log("Server is running on port 3001");
-})
+
+
+connectDB()
+  .then(() => {
+    console.log("Database connected successfully");
+    app.listen(7777, () => {
+      console.log("Server is running on port 7777");
+     });
+  })
+  .catch((err) => {
+    console.error("Database connection error:", err);
+  });
+
+
