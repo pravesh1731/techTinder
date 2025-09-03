@@ -3,29 +3,20 @@ const app = express();
 
 //order matter alot
 //app.use("/user", rH1, rH2, [rH3, rH4], rH5)
+const {adminAuth, userAuth} = require("./middlewares/auth.js");
 
-app.get("/user", (req, res, next)=>{
-    console.log("Response 1");
-    // res.send("User response 1");
-    next();
-},
-(req, res, next)=>{
-    console.log("Response 2");
-    res.send("User response 2");
-},
-(req, res, next)=>{
-    console.log("Response 3");
-    res.send("User response 3");
-},
-(req, res, next)=>{
-    console.log("Response 4");
-    res.send("User response 4");
-},
-(req, res, next)=>{
-    console.log("Response 5");
-    res.send("User response 5");
-},
-)
+app.use("/admin", adminAuth)
+
+app.get("/admin/getAllData", (req, res) =>{
+    res.send("All Data send")
+})
+
+// ish trha call kre middleware ko agr i he request handle ho.
+app.get("/user",userAuth, (req, res) =>{
+    res.send("Hello I am user")
+})
+
+
 
 
 app.listen(3001, ()=>{
