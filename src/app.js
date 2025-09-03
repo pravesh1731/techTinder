@@ -5,15 +5,22 @@ const app = express();
 //app.use("/user", rH1, rH2, [rH3, rH4], rH5)
 const {adminAuth, userAuth} = require("./middlewares/auth.js");
 
-app.use("/admin", adminAuth)
+app.use("/admin", adminAuth);   //this is a middleware
 
 app.get("/admin/getAllData", (req, res) =>{
     res.send("All Data send")
 })
 
-// ish trha call kre middleware ko agr i he request handle ho.
+// ish trha call kre middleware ko agr 1 he request handle ho.
 app.get("/user",userAuth, (req, res) =>{
     res.send("Hello I am user")
+})
+
+
+app.use("/", (err, req, res, next)=>{
+    if(err){
+        res.status(500).send("Something went wrong")
+    }
 })
 
 
