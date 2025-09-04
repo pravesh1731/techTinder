@@ -1,12 +1,12 @@
-// myaYm0V3OjCbk3xM
-// mongodb+srv://pravesh1731:myaYm0V3OjCbk3xM@pravesh.dvkuchg.mongodb.net/
+// 8vS29mMKw6ZfcDMW
+// mongodb+srv://pravesh4531_db_user:8vS29mMKw6ZfcDMW@pravesh.ciwypkh.mongodb.net/
 // mongodb+srv://pravesh1731:YHYLlZdIthOsYU84@pravesh.dpxvlse.mongodb.net/?retryWrites=true&w=majority
 
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
   await mongoose.connect(
-    "mongodb+srv://pravesh1731:myaYm0V3OjCbk3xM@pravesh.dvkuchg.mongodb.net/techTinder"
+    "mongodb+srv://pravesh4531_db_user:8vS29mMKw6ZfcDMW@pravesh.ciwypkh.mongodb.net/techTinder"
   );
 };
 

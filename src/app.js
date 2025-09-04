@@ -49,8 +49,8 @@ app.get("/feed", async (req, res) => {
   }
 });
 
-//Delete a user from database 
-app.delete("/user", async(req, res)=>{
+//Delete a user from database
+app.delete("/user", async (req, res) => {
   const userId = req.body.userId;
   try {
     await User.findByIdAndDelete(userId);
@@ -58,22 +58,37 @@ app.delete("/user", async(req, res)=>{
   } catch (err) {
     res.status(404).send("Something went wrong");
   }
-})
+});
 
 // Update the user data
-app.patch("/user", async(req, res)=>{
-  const userId = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+  const userId = req.params.userId;
   const data = req.body;
-  try{
-    const user = await User.findByIdAndUpdate(userId, data,{
-      returnDocument: 'after',
+  try {
+    const ALLOWED_UPDATES = [
+      "firstName",
+      "lastName",
+      "password",
+      "age",
+      "skills"
+    ];
+    const isUpdateAllowed = Object.keys(data);
+    const isValidOperation = isUpdateAllowed.every((update) =>
+      ALLOWED_UPDATES.includes(update)
+    );
+    if (!isValidOperation) {
+      return res.status(400).send("Update is not allowed!");
+    } 
+    
+    const user = await User.findByIdAndUpdate(userId, data, {
+      returnDocument: "after",
       runValidators: true,
     });
     res.send(user);
-  }catch (err) {
-    res.status(404).send("UPDATE FAILED:" +err.message);
+  } catch (err) {
+    res.status(404).send("UPDATE FAILED:" + err.message);
   }
-})
+});
 
 connectDB()
   .then(() => {

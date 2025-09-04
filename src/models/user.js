@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 //creating schema
 const userSchema = new mongoose.Schema({
@@ -10,7 +11,14 @@ const userSchema = new mongoose.Schema({
         type:String
     },
     email:{
-        type:String
+        type:String,
+        validate(value){
+            if(!validator.isEmail(value)){
+                throw new Error("Email is not valid");
+            }
+        }
+
+
     },
     password:{
         type:String
@@ -28,9 +36,17 @@ const userSchema = new mongoose.Schema({
         } 
     },
     about:{
-        type:String,
+        type:String, 
         default:"this is deafult thing about the user."
     },
+    skills:{
+        type:[String],
+        validate(value){
+            if(value.length > 10){
+                throw new Error("Skills are more than 10")
+            }
+        }
+    }
 
 },
 {
