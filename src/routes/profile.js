@@ -4,6 +4,7 @@ const { Auth } = require("../middlewares/auth.js");
 const { validateEditProfileData } = require("../utils/validation.js");
 const User = require("../models/user.js");
 const bcrypt = require("bcrypt");
+const validator = require("validator");
 
 //profile
 profileRouter.get("/profile/view", Auth, async (req, res) => {
@@ -46,10 +47,10 @@ profileRouter.patch("/profile/password", Auth, async(req, res) =>{
         const loggedInUser = req.user;
         var oldPassword = loggedInUser.password;
         const newPassword = req.body.password;
-        if(!oldPassword || !newPassword){
-            throw new Error("Both old and new password are required");
-        }
-    
+
+        if (!validator.isStrongPassword(newPassword)) {
+            throw new Error("Password is not strong enough");
+          };
     
         const hashedNewPassword = await bcrypt.hash(newPassword, 10);
         await User.findByIdAndUpdate(loggedInUser._id, { password: hashedNewPassword } );
