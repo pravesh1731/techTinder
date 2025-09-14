@@ -9,13 +9,14 @@ profileRouter
 - PATCH /profile/password  edit
 
 connectionRequestRouter
-- POST /reguest/send/intrested/:userId
-- POST /reguest/send/ignored/:userId
-- POST /reguest/send/accepted/:userId
-- POST /reguest/send/rejected/:userId
+- POST /request/send/intrested/:userId
+- POST /request/send/ignored/:userId
+
+- POST /request/review/accepted/:userId
+- POST /request/review/rejected/:userId
 
 userRouter
-- GET /user/connections
+- GET /user/requests/received
 - GET /user/received
 - GET /user/feed - Gets your profile and other users on platform
 
